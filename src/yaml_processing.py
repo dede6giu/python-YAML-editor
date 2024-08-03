@@ -26,9 +26,9 @@ def get_content(f) -> str:
         nextl = f.readline()
     return result
 
-def startup(directory: str, *, extension: str = '.md'):
+def startup(directory: str, *, extension: str = '.md', debugmode=False):
     if directory == '' or directory == None:
-        ProcessError("Directory must not be empty.")
+        ProcessError("Directory must not be empty")
     
     if not is_valid_filepath(directory):
         ProcessError("Directory must be valid")
@@ -37,20 +37,29 @@ def startup(directory: str, *, extension: str = '.md'):
         content: str = ""
         config: dict = {}
 
+        if debugmode: print(f"Working on: {filepath}")
+
         # separating YAML from file content
         with open(filepath, "r") as f:
             config = yaml.safe_load(get_yaml(f))
-            if config == '' or config == None: continue # no/empty YAML
+            if config == '' or config == None: 
+                if debugmode: print("    Result: Empty / No YAML")
+                continue
             content = get_content(f)
         
         # processing
-        config = main_task(config)
-        
+        try:
+            config = main_task(config)
+        except:
+            print(f"     ERROR: Some unkown ERROR ocurred while processing {filepath}")
+            continue
+
         # yaml dump
         with open(filepath, "w") as f:
             f.write('---\n')
             f.write(yaml.dump(config))
             f.write('---\n')
             f.write(content)
+            if debugmode: print(f"    Result: Success!")
     else:
-        print("All finished!")
+        print("----------\nAll finished!")
