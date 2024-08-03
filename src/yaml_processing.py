@@ -1,5 +1,6 @@
 import yaml
 import glob
+from pathvalidate import is_valid_filepath
 from task import main_task
 
 class ProcessError(Exception):
@@ -28,6 +29,9 @@ def get_content(f) -> str:
 def startup(directory: str, *, extension: str = '.md'):
     if directory == '' or directory == None:
         ProcessError("Directory must not be empty.")
+    
+    if not is_valid_filepath(directory):
+        ProcessError("Directory must be valid")
 
     for filepath in glob.glob(directory + '/**/*' + extension, recursive=True):
         content: str = ""
