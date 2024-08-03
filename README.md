@@ -4,7 +4,7 @@
 
 
 Necessary libraries:
-- [yaml](https://github.com/yaml/pyyaml)
+- [pyyaml](https://github.com/yaml/pyyaml)
 - [pathvalidate](https://github.com/thombashi/pathvalidate)
 
 
