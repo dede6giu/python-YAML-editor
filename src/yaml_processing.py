@@ -40,7 +40,7 @@ def startup(directory: str, *, extension: str = '.md', debugmode=False):
         if debugmode: print(f"Working on: {filepath}")
 
         # separating YAML from file content
-        with open(filepath, "r") as f:
+        with open(filepath, "r", encoding='UTF8') as f:
             config = yaml.safe_load(get_yaml(f))
             if config == '' or config == None: 
                 if debugmode: print("    Result: Empty / No YAML")
@@ -55,7 +55,7 @@ def startup(directory: str, *, extension: str = '.md', debugmode=False):
             continue
 
         # yaml dump
-        with open(filepath, "w") as f:
+        with open(filepath, "w", encoding='UTF8') as f:
             f.write('---\n')
             f.write(yaml.dump(config))
             f.write('---\n')
